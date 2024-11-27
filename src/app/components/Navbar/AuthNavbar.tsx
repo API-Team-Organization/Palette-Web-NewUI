@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ''
 import {FC} from "react";
 
 export enum AuthType {
@@ -12,8 +12,8 @@ interface AuthNavbarProps {
 
 const AuthNavbar: FC<AuthNavbarProps> = ({auth}) => {
   return (
-      <nav>
-        <Image src={''} alt={'palette-logo-img'} />
+      <nav className={`navbar`}>
+        <div className={`logo`}/>
         <div>
           <h3>Don't have an account yet?</h3>
           <div>

@@ -5,6 +5,7 @@ export default function Page() {
   return (
       <section className={`container`}>
         <AuthNavbar auth={AuthType.SignUp} />
+        <div className={`auth-bg`}></div>
       </section>
   )
 }
