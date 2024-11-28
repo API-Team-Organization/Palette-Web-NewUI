@@ -1,11 +1,11 @@
-.signup-container {
+.signin-container {
   display: flex;
   width: 100%;
   height: 100vh;
   color-scheme: light dark;
   background-color: light-dark(#E9E9E9, #161616);
 
-  .signup-wrapper {
+  .signin-wrapper {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -39,12 +39,12 @@
         }
       }
 
-      .signup-form {
+      .signin-form {
         margin-top: 6rem;
         display: flex;
         flex-direction: column;
 
-        .signupBtn {
+        .signinBtn {
           display: flex;
           justify-content: center;
           align-items: center;

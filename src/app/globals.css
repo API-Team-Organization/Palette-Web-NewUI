@@ -2,6 +2,11 @@
   color-scheme: light dark;
   --light-bg: #F2F2F2;
   --dark-bg: #0D0D0D;
+  --font-figtree: 'Figtree'
+}
+
+html {
+  font-size: 62.5%;
 }
 
 body {

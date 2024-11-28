@@ -1,0 +1,21 @@
+.signInput {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-family: var(--font-figtree);
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  input {
+    margin-top: 1rem;
+    min-width: 48rem;
+    height: 4.5rem;
+    background: transparent;
+    border: 1px solid light-dark(#D0D0D0, #2F2F2F);
+    border-radius: 1.5rem;
+    padding-left: 2rem;
+  }
+}

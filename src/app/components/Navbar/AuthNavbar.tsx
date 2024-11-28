@@ -1,23 +1,23 @@
-import ''
+'use client'
+import '../scss/Navbar/AuthNavbar.scss'
+import {useRouter} from "next/navigation";
 import {FC} from "react";
 
-export enum AuthType {
-  SignUp = "SignUp",
-  SignIn = "SignIn",
+export interface AuthProps {
+  authState?: boolean
 }
 
-interface AuthNavbarProps {
-  auth: AuthType
-}
 
-const AuthNavbar: FC<AuthNavbarProps> = ({auth}) => {
+const AuthNavbar: FC<AuthProps> = ({authState}) => {
+  const router = useRouter();
+
   return (
       <nav className={`navbar`}>
         <div className={`logo`}/>
-        <div>
-          <h3>Don't have an account yet?</h3>
-          <div>
-            {auth}
+        <div className={`mainBox`}>
+          <h3>Already have an account?</h3>
+          <div className={`signBtn`} onClick={() => router.replace(authState ? '/auth/login' : '/auth/register')}>
+            {authState ? 'SignIn' : 'SignUp'}
           </div>
         </div>
       </nav>
