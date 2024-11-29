@@ -1,0 +1,23 @@
+.userDetailInput {
+  width: calc(100% - 2.2rem);
+  height: 4rem;
+  outline: none;
+  padding-left: 2rem;
+  padding-right: 0;
+  margin-right: 1rem;
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid light-dark(#7E7E7E, #818181);
+  border-radius: 1rem;
+  color: light-dark(#404442, #706B6D);
+  font-size: 1.6rem;
+  font-family: var(--font-figtree);
+  font-weight: 400;
+
+  &:last-child {
+    margin-right: 0; /* 마지막 필드의 오른쪽 마진 제거 */
+  }
+
+  &::placeholder {
+    color: light-dark(#404442, #706B6D);
+  }
+}
