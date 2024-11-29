@@ -47,7 +47,7 @@ export default function Page () {
               <UserDetailInput inputType={'number'} placeholder={'month'} onFocus={handleInputFocus} onBlur={handleInputBlur} />
               <UserDetailInput inputType={'number'} placeholder={'day'} onFocus={handleInputFocus} onBlur={handleInputBlur} />
               <button className={`submitBtn`}>
-                <FaChevronRight size={20} color={'#706B6D'} />
+                <FaChevronRight size={20} className={`rightIcon`} />
               </button>
             </div>
           </form>

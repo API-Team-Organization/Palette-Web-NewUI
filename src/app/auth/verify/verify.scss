@@ -1,4 +1,4 @@
-.userDetailContainer {
+.verifyContainer {
   position: relative;
   display: flex;
   justify-content: center;
@@ -60,15 +60,10 @@
         font-size: 1.6rem;
         font-family: 'Pretendard';
         font-weight: 400;
-
-        span {
-          cursor: pointer;
-          text-decoration-line: underline;
-        }
       }
     }
 
-    .userDetailForm {
+    .verifyForm {
       position: absolute;
       top: 4rem;
       margin-top: 17.5rem;
@@ -76,43 +71,25 @@
       height: fit-content;
 
       .inputBox {
-        margin-top: 1rem;
         display: flex;
         flex-direction: row;
-        justify-content: space-between; /* 입력 필드 간 간격 균등 배치 */
         width: 100%;
-        height: auto; /* 콘텐츠에 맞게 높이 조정 */
+        justify-content: center;
+        gap: 0.8rem;
 
-        input[type=number] {
-          -moz-appearance: textfield; // Firefox
-          appearance: textfield; // Chrome, Safari, Opera, Edge
-          text-align: center;
-          padding: 0.1rem 0;
-
-          &::-webkit-inner-spin-button,
-          &::-webkit-outer-spin-button {
-            -webkit-appearance: none; // Chrome, Safari, Opera
-            margin: 0; // Firefox
-          }
-        }
-
-        .submitBtn {
-          position: static;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 4.4rem;
-          padding: 0 1.2rem;
+        input {
+          width: 5rem;
+          height: 5rem;
           background: light-dark(rgba(124, 124, 124, 0.15), rgba(126, 126, 126, 0.15));
           border: 1px solid light-dark(#7C7C7C, #7E7E7E);
-          border-radius: 0.8rem;
-          cursor: pointer;
-
-          .rightIcon {
-            color: light-dark(#818181, #706B6D);
-          }
+          border-radius: 1rem;
+          text-align: center;
+          font-size: 1.6rem;
+          font-family: var(--font-figtree);
+          font-weight: 700;
         }
       }
+
     }
 
     // Dark mode logo
