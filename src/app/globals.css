@@ -2,6 +2,10 @@
   color-scheme: light dark;
   --light-bg: #F2F2F2;
   --dark-bg: #0D0D0D;
+  --dark-primay: #161616;
+  --light-primary: #E9E9E9;
+  --dark-button: #232323;
+  --light-button: #DCDCDC;
   --font-figtree: 'Figtree'
 }
 

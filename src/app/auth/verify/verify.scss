@@ -90,6 +90,15 @@
         }
       }
 
+      p {
+        text-align: center;
+        margin-top: 1rem;
+        color: light-dark(#090909, #9D9C9D);
+        font-size: 1.8rem;
+        font-family: var(--font-figtree);
+        font-weight: 300;
+        cursor: pointer;
+      }
     }
 
     // Dark mode logo

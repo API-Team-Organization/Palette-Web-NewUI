@@ -1,3 +1,4 @@
+'use client'
 import './register.scss'
 import AuthNavbar from "@/app/components/Navbar/AuthNavbar";
 import SignInput, {InputType} from "@/app/components/Input/SignInput";
