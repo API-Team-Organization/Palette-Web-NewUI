@@ -17,7 +17,7 @@ const StepStyleProps = {
   completedTextColor: '#FFFFFF',
   inactiveBgColor: '#CCCCCC',
   inactiveTextColor: '#000000',
-  circleFontSize: '1.2rem',
+  circleFontSize: '1.45rem',
   labelFontSize: '1.4rem',
   borderRadius: '50%',
   fontWeight: 600,
@@ -25,7 +25,7 @@ const StepStyleProps = {
 
 const CustomStepper = () => {
   return (
-      <Stepper activeStep={5} connectorStyleConfig={ConnectorStyleProps} styleConfig={StepStyleProps}>
+      <Stepper activeStep={0} connectorStyleConfig={ConnectorStyleProps} styleConfig={StepStyleProps}>
         <Step label="Ratio" />
         <Step label="Direction" />
         <Step label="Title" />
