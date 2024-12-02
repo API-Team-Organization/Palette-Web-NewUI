@@ -19,6 +19,7 @@ import useStepStore from "@/app/store/useStepStore";
 import {useSearchParams} from "next/navigation";
 import {io, Socket} from "socket.io-client";
 import TitleDescriptionInput from "@/app/components/Input/TitleDescriptionInput";
+import Position from "@/app/components/Position";
 
 interface MessageItem {
   regenScope: boolean;
@@ -259,6 +260,11 @@ export default function Home() {
                       value={value}
                       setValue={setValue}
                   />
+              ) : null
+            }
+            {
+              step === 4 ? (
+                  <Position content={messageList[9]?.message || ''}/>
               ) : null
             }
           </div>
