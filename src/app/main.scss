@@ -240,6 +240,10 @@
     }
 
     .palette-mainBox {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       flex: 11;
       background: light-dark(var(--light-primary), var(--dark-primay));
       border-radius: 3rem;

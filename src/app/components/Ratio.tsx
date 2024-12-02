@@ -1,15 +1,22 @@
-enum RatioType {
+import './scss/Ratio.scss';
+import {FC} from "react";
+
+export enum RatioType {
   DISPLAY = 'DISPLAY',
   PAPER = 'PAPER',
   SQUARE = 'SQUARE',
   TABLET = 'TABLET',
-
 }
 
-const Ratio = () => {
+interface RatioProps {
+  ratio: RatioType;
+  direction?: 'Horizontal' | 'Vertical';
+}
+
+const Ratio: FC<RatioProps> = ({ratio}) => {
   return (
-      <div>
-        <h1>{}</h1>
+      <div className={`ratio ${ratio}`}>
+        <h1>{ratio}</h1>
       </div>
   )
 }

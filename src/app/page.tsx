@@ -11,8 +11,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import useUserStore from "@/app/store/useUserStore";
 import useRoomStore from "@/app/store/useRoomStore";
-import CustomStepper from "@/app/components/Stepper/CustomStepper";
 import StepperComponent from "@/app/components/Stepper/StepperComponent";
+import Ratio, {RatioType} from "@/app/components/Ratio";
 
 export default function Home() {
   const { user, setUser } = useUserStore();
@@ -124,7 +124,12 @@ export default function Home() {
             <div className={`signBtn`}>Login to Palette</div>
           </div>
           <div className={`palette-mainBox`}>
-            <StepperComponent />
+            <div style={{position: 'absolute', width: '100%', height: '100%'}}>
+              <StepperComponent />
+            </div>
+            <div>
+              <Ratio ratio={RatioType.TABLET} />
+            </div>
           </div>
         </div>
     </main>

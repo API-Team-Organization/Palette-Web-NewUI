@@ -1,0 +1,44 @@
+.ratio {
+  display: flex;
+  justify-content: start;
+  align-items: end;
+
+  &.DISPLAY {
+    width: 64rem;
+    height: 36rem;
+    background: rgba(75, 114, 230, 0.25);
+    border: 1px solid #3E4AED;
+    border-radius: 10px;
+  }
+
+  &.PAPER {
+    width: 30rem;
+    height: 42.3rem;
+    background: rgba(75, 114, 230, 0.25);
+    border: 1px solid #3E4AED;
+    border-radius: 10px;
+  }
+
+  &.SQUARE {
+    width: 40rem;
+    height: 40rem;
+    background: rgba(75, 114, 230, 0.25);
+    border: 1px solid #3E4AED;
+    border-radius: 10px;
+  }
+
+  &.TABLET {
+    width: 48rem;
+    height: 36rem;
+    background: rgba(75, 114, 230, 0.25);
+    border: 1px solid #3E4AED;
+    border-radius: 10px;
+  }
+
+  h1 {
+    margin: 2rem;
+    font-size: 1.8rem;
+    font-family: var(--font-figtree);
+    font-weight: 600;
+  }
+}
