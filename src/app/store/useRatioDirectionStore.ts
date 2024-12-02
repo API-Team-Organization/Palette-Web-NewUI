@@ -3,14 +3,14 @@ import {RatioType} from "@/app/components/Ratio";
 
 interface RatioDirectionStore {
   ratio: RatioType;
-  direction: 'Horizontal' | 'Vertical';
+  direction: 'Horizontal' | 'Vertical' | null;
   setRatio: (ratio: RatioType) => void;
   setDirection: (direction: 'Horizontal' | 'Vertical') => void;
 }
 
 const useRatioDirectionStore = create<RatioDirectionStore>((set) => ({
   ratio: RatioType.DISPLAY,
-  direction: 'Horizontal',
+  direction: null,
   setRatio: (ratio) => set({ ratio }),
   setDirection: (direction) => set({ direction }),
 }));

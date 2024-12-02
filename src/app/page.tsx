@@ -6,7 +6,7 @@ import {IoIosSearch} from "react-icons/io";
 import {HiMiniInbox} from "react-icons/hi2";
 import {FaPlus} from "react-icons/fa";
 import {MdMoreHoriz} from "react-icons/md";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import useUserStore from "@/app/store/useUserStore";
@@ -16,12 +16,16 @@ import Ratio, {RatioType} from "@/app/components/Ratio";
 import QuestionnaireSelectButton from "@/app/components/Button/QuestionnaireSelectButton";
 import useRatioDirectionStore from "@/app/store/useRatioDirectionStore";
 import useStepStore from "@/app/store/useStepStore";
+import {useSearchParams} from "next/navigation";
 
 export default function Home() {
   const { user, setUser } = useUserStore();
   const { roomList, setRoomList } = useRoomStore();
-  const { ratio } = useRatioDirectionStore();
-  const step = useStepStore(state => state.step);
+  const { ratio, direction } = useRatioDirectionStore();
+  const [qna, setQna] = useState<any[]>();
+  const { step, setStep } = useStepStore();
+  const searchParams = useSearchParams();
+  const roomId = searchParams.get('room');
 
   const getUserData = async () => {
     try {
@@ -60,6 +64,23 @@ export default function Home() {
     }
   };
 
+  const getQna = async (id: string) => {
+    try {
+      await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/room/${id}/qna`, {
+        headers: {
+          'x-auth-token': Cookies.get('access_token')
+        }
+      }).then((res) => {
+        if (res.status === 200) {
+          setQna(res.data.data);
+          setStep(res.data.data.filter((q: any) => q.answer !== null).length);
+        }
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const addRoom = async () => {
     try {
       await axios.post(`${(process.env.NEXT_PUBLIC_API_URL)}/room`, {}, {
@@ -76,6 +97,12 @@ export default function Home() {
       console.error('방을 추가하는 중 오류 발생:', err);
     }
   }
+
+  useEffect(() => {
+    if (roomId) {
+      getQna(roomId);
+    }
+  }, [roomId])
 
   useEffect(() => {
     getUserData();
@@ -95,7 +122,7 @@ export default function Home() {
     }, 180000);
 
     return () => clearInterval(refreshTokenIntervalId);
-  }, [])
+  }, []);
 
   return (
       <main className={`palette-container`}>
@@ -154,12 +181,16 @@ export default function Home() {
             <div style={{position: 'absolute', width: '100%', height: '100%'}}>
               <StepperComponent />
             </div>
-            <div style={{position: 'relative'}}>
-              <Ratio ratio={ratio} />
-              <QuestionnaireSelectButton step={step} />
-            </div>
+            {
+              step < 2 ? (
+                  <div style={{position: 'relative'}}>
+                    <Ratio ratio={ratio} direction={direction}/>
+                    <QuestionnaireSelectButton step={step}/>
+                  </div>
+              ) : null
+            }
           </div>
         </div>
-    </main>
+      </main>
   );
 }

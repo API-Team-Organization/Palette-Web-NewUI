@@ -10,13 +10,13 @@ export enum RatioType {
 
 interface RatioProps {
   ratio: RatioType;
-  direction?: 'Horizontal' | 'Vertical';
+  direction?: 'Horizontal' | 'Vertical' | null;
 }
 
-const Ratio: FC<RatioProps> = ({ratio}) => {
+const Ratio: FC<RatioProps> = ({ratio, direction}) => {
   return (
       <div className={`ratio ${ratio}`}>
-        <h1>{ratio}</h1>
+        <h1>{`${ratio} ${direction !== null ? (direction === 'Horizontal' ? '+ 가로' : '+ 세로') : ''}`}</h1>
       </div>
   )
 }
