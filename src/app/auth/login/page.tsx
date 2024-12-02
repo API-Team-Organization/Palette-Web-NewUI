@@ -4,6 +4,7 @@ import AuthNavbar from "@/app/components/Navbar/AuthNavbar";
 import SignInput, {InputType} from "@/app/components/Input/SignInput";
 import {useState} from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 export default function Page() {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -17,8 +18,8 @@ export default function Page() {
           password
         }).then((res) => {
           if (res.status === 200) {
-            console.log(res.data)
-            // Cookies.set('access_token', res.data)
+            Cookies.set('access_token', res.headers["x-auth-token"]);
+            window.location.href = '/'
           }
         })
       }

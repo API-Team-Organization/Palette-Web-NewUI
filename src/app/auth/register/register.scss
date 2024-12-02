@@ -52,7 +52,9 @@
           height: 4.5rem;
           padding: 0.1rem 0;
           background:light-dark(#E3E3E3, #1C1C1C);
+          border: none;
           border-radius: 1.5rem;
+          user-select: none;
           color: light-dark(#606060, #9F9F9F);
           font-size: 1.6rem;
           font-family: var(--font-figtree);

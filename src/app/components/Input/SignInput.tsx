@@ -11,15 +11,15 @@ interface SignInputProps {
   title: string;
   inputType: InputType;
   placeholder?: string;
-  value?: string;
-  setState?: (string) => void;
+  value: string;
+  setState: (value: string) => void;
 }
 
 const SignInput: FC<SignInputProps> = ({title, inputType, placeholder, value, setState}) => {
   return (
       <div className={`signInput`}>
         <label>{title}</label>
-        <input type={inputType} placeholder={placeholder} value={value} onChange={(e) => setState?.(e.target.value)} />
+        <input type={inputType} placeholder={placeholder} value={value} onChange={(e) => setState(e.target.value)} />
       </div>
   )
 }

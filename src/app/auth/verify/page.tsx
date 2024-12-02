@@ -1,15 +1,19 @@
 'use client'
 import './verify.scss'
-import {useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import useRegisterStore from "@/app/store/useRegisterStore";
 
-export default function Page () {
-  const logoRef = useRef(null);
-  const textBoxRef = useRef(null);
-  const inputRefs = useRef([]);
+export default function Page() {
+  const logoRef = useRef<HTMLDivElement | null>(null);
+  const textBoxRef = useRef<HTMLDivElement | null>(null);
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]); // HTMLInputElement 배열로 설정
   const [code, setCode] = useState(Array(6).fill(""));
+  const email = useRegisterStore(state => state.email);
 
-  const handleKeyDown = (e) => {
-    const index = inputRefs.current.indexOf(e.target);
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const index = inputRefs.current.indexOf(e.target as HTMLInputElement); // 명시적으로 캐스팅
 
     if (
         !/^[0-9]{1}$/.test(e.key) &&
@@ -22,21 +26,19 @@ export default function Page () {
     }
 
     if (e.key === "Delete" || e.key === "Backspace") {
-      // 현재 인풋 값 비우기
       setCode((prevOtp) => [
         ...prevOtp.slice(0, index),
         "",
         ...prevOtp.slice(index + 1),
       ]);
 
-      // Backspace일 때 이전 인풋으로 포커스 이동
       if (e.key === "Backspace" && index > 0) {
-        inputRefs.current[index - 1].focus();
+        inputRefs.current[index - 1]?.focus(); // 안전한 접근
       }
     }
   };
 
-  const handleInput = (e) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
     const index = inputRefs.current.indexOf(target);
     if (target.value) {
@@ -46,24 +48,22 @@ export default function Page () {
         ...prevOtp.slice(index + 1),
       ]);
       if (index < code.length - 1) {
-        inputRefs.current[index + 1].focus();
+        inputRefs.current[index + 1]?.focus(); // 안전한 접근
       }
     }
   };
 
-  const handleInputFocus = (e) => {
+  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.target.select();
     if (logoRef.current) {
-      // @ts-ignore
-      logoRef.current.style.filter = 'blur(0.25rem)';
+      logoRef.current.style.filter = "blur(0.25rem)";
     }
     if (textBoxRef.current) {
-      // @ts-ignore
-      textBoxRef.current.style.filter = 'blur(0.3rem)';
+      textBoxRef.current.style.filter = "blur(0.3rem)";
     }
-  }
+  };
 
-  const handlePaste = (e) => {
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const text = e.clipboardData.getData("text");
     if (!new RegExp(`^[0-9]{${code.length}}$`).test(text)) {
@@ -75,51 +75,95 @@ export default function Page () {
 
   const handleInputBlur = () => {
     if (logoRef.current) {
-      // @ts-ignore
-      logoRef.current.style.filter = 'blur(0)';
+      logoRef.current.style.filter = "blur(0)";
     }
     if (textBoxRef.current) {
-      // @ts-ignore
-      textBoxRef.current.style.filter = 'blur(0)';
+      textBoxRef.current.style.filter = "blur(0)";
     }
-  }
+  };
 
-  const resendHandler = () => {}
+  const confirmVerify = async () => {
+    try {
+      await axios
+          .post(
+              `${process.env.NEXT_PUBLIC_API_URL}/auth/verify`,
+              {
+                code: code.join(""),
+              },
+              {
+                headers: { "x-auth-token": Cookies.get("access_token") },
+              }
+          )
+          .then((res) => {
+            if (res.status === 200) {
+              window.location.href = "/";
+            }
+          });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const resendHandler = async () => {
+    try {
+      await axios
+          .post(
+              `${process.env.NEXT_PUBLIC_API_URL}/auth/resend`,
+              {},
+              {
+                headers: { "x-auth-token": Cookies.get("access_token") },
+              }
+          )
+          .then((res) => {
+            if (res.status === 200) {
+              alert(`정상적으로 코드가 재발송이 되었습니다.`);
+            }
+          });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (code[code.length - 1] !== "") {
+      confirmVerify();
+    }
+  }, [code]);
 
   return (
       <div className={`verifyContainer`}>
-        <div className={'bgWrapper'}>
+        <div className={"bgWrapper"}>
           <div className={`blurBox`} />
           <div className={`logo`} ref={logoRef} />
           <div className={`textBox`} ref={textBoxRef}>
             <h1>Check your Inbox</h1>
-            <h3 style={{marginTop: '1rem'}}>우리가 gk7734@duck.com 으로 코드를 보냈습니다.</h3>
+            <h3 style={{ marginTop: "1rem" }}>
+              우리가 {email || 'user@example.com'} 으로 코드를 보냈습니다.
+            </h3>
             <h3>코드를 입력해 주십시오.</h3>
           </div>
           <form className={`verifyForm`}>
             <div className={`inputBox`}>
-              {code.map((digit, idx) => {
-                return (
-                    <input
-                        key={idx}
-                        type="text"
-                        maxLength={1}
-                        value={digit}
-                        onChange={handleInput}
-                        onKeyDown={handleKeyDown}
-                        onFocus={handleInputFocus}
-                        onBlur={handleInputBlur}
-                        onPaste={handlePaste}
-                        ref={(el) => {
-                          inputRefs.current[idx] = el;
-                        }}
-                    />
-                )
-              })}
+              {code.map((digit, idx) => (
+                  <input
+                      key={idx}
+                      type="text"
+                      maxLength={1}
+                      value={digit}
+                      onChange={handleInput}
+                      onKeyDown={handleKeyDown}
+                      onFocus={handleInputFocus}
+                      onBlur={handleInputBlur}
+                      onPaste={handlePaste}
+                      ref={(el) => {
+                        inputRefs.current[idx] = el; // 반환값 제거
+                      }}
+                  />
+              ))}
             </div>
             <p onClick={resendHandler}>Resend Code</p>
           </form>
         </div>
       </div>
-  )
+  );
 }
