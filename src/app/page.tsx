@@ -38,6 +38,7 @@ export default function Home() {
   const { step, setStep } = useStepStore();
   const [qna, setQna] = useState<any[]>();
   const [messageList, setMessageList] = useState<MessageItem[]>([]);
+  const [value, setValue] = useState<string>('');
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const roomId = searchParams.get('room');
@@ -241,8 +242,23 @@ export default function Home() {
               ) : null
             }
             {
-              step > 1 ? (
-                  <TitleDescriptionInput />
+              step === 2 ? (
+                  <TitleDescriptionInput
+                      type={'Title'}
+                      content={messageList[5]?.message || ''}
+                      value={value}
+                      setValue={setValue}
+                  />
+              ) : null
+            }
+            {
+              step === 3 ? (
+                  <TitleDescriptionInput
+                      type={'Description'}
+                      content={messageList[7]?.message || ''}
+                      value={value}
+                      setValue={setValue}
+                  />
               ) : null
             }
           </div>
