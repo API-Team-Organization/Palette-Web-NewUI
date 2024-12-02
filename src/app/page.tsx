@@ -6,7 +6,7 @@ import {IoIosSearch} from "react-icons/io";
 import {HiMiniInbox} from "react-icons/hi2";
 import {FaPlus} from "react-icons/fa";
 import {MdMoreHoriz} from "react-icons/md";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import useUserStore from "@/app/store/useUserStore";
@@ -17,13 +17,28 @@ import QuestionnaireSelectButton from "@/app/components/Button/QuestionnaireSele
 import useRatioDirectionStore from "@/app/store/useRatioDirectionStore";
 import useStepStore from "@/app/store/useStepStore";
 import {useSearchParams} from "next/navigation";
+import {io, Socket} from "socket.io-client";
+import TitleDescriptionInput from "@/app/components/Input/TitleDescriptionInput";
+
+interface MessageItem {
+  regenScope: boolean;
+  message: string;
+  resource: any;
+  isAi: string;
+  promptId: string;
+  datetime: Date;
+  type: string;
+  position: number;
+}
 
 export default function Home() {
   const { user, setUser } = useUserStore();
   const { roomList, setRoomList } = useRoomStore();
   const { ratio, direction } = useRatioDirectionStore();
-  const [qna, setQna] = useState<any[]>();
   const { step, setStep } = useStepStore();
+  const [qna, setQna] = useState<any[]>();
+  const [messageList, setMessageList] = useState<MessageItem[]>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const roomId = searchParams.get('room');
 
@@ -63,6 +78,36 @@ export default function Home() {
       console.error('방 목록을 가져오는 중 오류 발생:', err);
     }
   };
+
+  const connectWebSocket = useCallback(() => {
+    const socket: Socket = io(`localhost:3336/conversion`, {
+      transports: ['websocket'],
+    });
+
+    socket.on('connect', () => {
+      console.log('Socket connected');
+      socket.emit('wstoio', {
+        roomId: roomId,
+        token: Cookies.get('access_token')
+      });
+    });
+
+    socket.on('message', (message: MessageItem) => {
+      setMessageList((prevState) => [...prevState, { message: message.message,
+        resource: message.resource,
+        isAi: message.isAi,
+        promptId: message.promptId,
+        datetime: message.datetime,
+        type: message.type,
+        position: message.position,
+        regenScope: message.regenScope,
+      }])
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [roomId]);
 
   const getQna = async (id: string) => {
     try {
@@ -105,8 +150,11 @@ export default function Home() {
   }, [roomId])
 
   useEffect(() => {
+    const token = Cookies.get('access_token');
+    setIsLoggedIn(!!token);
     getUserData();
     getRoomLists();
+    const socketCleanup = connectWebSocket();
     const refreshTokenIntervalId = setInterval(async () => {
       try {
         await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/session`, {
@@ -121,7 +169,10 @@ export default function Home() {
       }
     }, 180000);
 
-    return () => clearInterval(refreshTokenIntervalId);
+    return () => {
+      socketCleanup;
+      clearInterval(refreshTokenIntervalId);
+    }
   }, []);
 
   return (
@@ -173,7 +224,7 @@ export default function Home() {
           </div>
         </div>
         <div className={`palette-main-wrapper`}>
-          <div className={`palette-top-panel`}>
+          <div className={`palette-top-panel`} style={{display: isLoggedIn ? 'none' : 'flex'}}>
             <h1>로그인을 하여 Pallete가 제공하는 홍보물을 만들어 보세요.</h1>
             <div className={`signBtn`}>Login to Palette</div>
           </div>
@@ -187,6 +238,11 @@ export default function Home() {
                     <Ratio ratio={ratio} direction={direction}/>
                     <QuestionnaireSelectButton step={step}/>
                   </div>
+              ) : null
+            }
+            {
+              step > 1 ? (
+                  <TitleDescriptionInput />
               ) : null
             }
           </div>
