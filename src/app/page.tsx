@@ -13,6 +13,7 @@ import useUserStore from "@/app/store/useUserStore";
 import useRoomStore from "@/app/store/useRoomStore";
 import StepperComponent from "@/app/components/Stepper/StepperComponent";
 import Ratio, {RatioType} from "@/app/components/Ratio";
+import QuestionnaireSelectButton from "@/app/components/Button/QuestionnaireSelectButton";
 
 export default function Home() {
   const { user, setUser } = useUserStore();
@@ -127,8 +128,9 @@ export default function Home() {
             <div style={{position: 'absolute', width: '100%', height: '100%'}}>
               <StepperComponent />
             </div>
-            <div>
+            <div style={{position: 'relative'}}>
               <Ratio ratio={RatioType.TABLET} />
+              <QuestionnaireSelectButton />
             </div>
           </div>
         </div>
