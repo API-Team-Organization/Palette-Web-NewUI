@@ -14,10 +14,14 @@ import useRoomStore from "@/app/store/useRoomStore";
 import StepperComponent from "@/app/components/Stepper/StepperComponent";
 import Ratio, {RatioType} from "@/app/components/Ratio";
 import QuestionnaireSelectButton from "@/app/components/Button/QuestionnaireSelectButton";
+import useRatioDirectionStore from "@/app/store/useRatioDirectionStore";
+import useStepStore from "@/app/store/useStepStore";
 
 export default function Home() {
   const { user, setUser } = useUserStore();
   const { roomList, setRoomList } = useRoomStore();
+  const { ratio } = useRatioDirectionStore();
+  const step = useStepStore(state => state.step);
 
   const getUserData = async () => {
     try {
@@ -56,8 +60,26 @@ export default function Home() {
     }
   };
 
+  const addRoom = async () => {
+    try {
+      await axios.post(`${(process.env.NEXT_PUBLIC_API_URL)}/room`, {}, {
+        headers: {
+          'x-auth-token': Cookies.get('access_token')
+        }
+      })
+          .then((res) => {
+            if (res.status === 200) {
+              window.location.href = '/?room=' + res.data.data.id;
+            }
+          })
+    } catch (err) {
+      console.error('방을 추가하는 중 오류 발생:', err);
+    }
+  }
+
   useEffect(() => {
     getUserData();
+    getRoomLists();
     const refreshTokenIntervalId = setInterval(async () => {
       try {
         await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/session`, {
@@ -99,13 +121,17 @@ export default function Home() {
             <div className={`roomBox`}>
               {roomList?.map((room, index) => {
                 return (
-                    <div className={`room`}>
+                    <div
+                        className={`room`}
+                        onClick={() => window.location.href = '/?room=' + room.id}
+                        key={index}
+                    >
                       <h1>{room.title}</h1>
                     </div>
                 )
               })}
             </div>
-            <div className={`addRoom`}>
+            <div className={`addRoom`} onClick={addRoom}>
               <FaPlus size={20}/>
             </div>
           </div>
@@ -129,8 +155,8 @@ export default function Home() {
               <StepperComponent />
             </div>
             <div style={{position: 'relative'}}>
-              <Ratio ratio={RatioType.TABLET} />
-              <QuestionnaireSelectButton />
+              <Ratio ratio={ratio} />
+              <QuestionnaireSelectButton step={step} />
             </div>
           </div>
         </div>

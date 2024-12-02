@@ -1,4 +1,5 @@
 import {Step, Stepper} from 'react-form-stepper';
+import useStepStore from "@/app/store/useStepStore";
 
 const ConnectorStyleProps = {
   disabledColor: '#818181',
@@ -24,8 +25,10 @@ const StepStyleProps = {
 }
 
 const CustomStepper = () => {
+  const step = useStepStore(state => state.step);
+
   return (
-      <Stepper activeStep={0} connectorStyleConfig={ConnectorStyleProps} styleConfig={StepStyleProps}>
+      <Stepper activeStep={step} connectorStyleConfig={ConnectorStyleProps} styleConfig={StepStyleProps}>
         <Step label="Ratio" />
         <Step label="Direction" />
         <Step label="Title" />
