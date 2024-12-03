@@ -264,7 +264,7 @@ export default function Home() {
             }
             {
               step === 4 ? (
-                  <Position content={messageList[9]?.message || ''}/>
+                  <Position content={messageList[9]?.message || '포스터 제목의 위치는 어디에 두시겠습니까?'}/>
               ) : null
             }
           </div>
