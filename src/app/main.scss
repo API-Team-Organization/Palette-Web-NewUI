@@ -122,7 +122,7 @@
         flex-direction: column;
         margin-top: 2rem;
         width: 90%;
-        height: fit-content;
+        height: 60rem;
         overflow-y: scroll;
         gap: 0.8rem;
 
@@ -164,6 +164,7 @@
     }
 
     .secondWrapper {
+      padding-top: 2rem;
       display: flex;
       width: 100%;
       height: fit-content;
@@ -247,6 +248,62 @@
       flex: 11;
       background: light-dark(var(--light-primary), var(--dark-primay));
       border-radius: 3rem;
+
+      .complete {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .finalBox {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          height: 100%;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            width: 50%;
+            height: 50%;
+            border-radius: 2rem;
+          }
+
+          .regenBtn {
+            margin-top: 2rem;
+            background: #3E4AED;
+            padding: 1.5rem 4rem;
+            border-radius: 2.5rem;
+            font-size: 1.8rem;
+            font-family: 'Pretendard';
+            font-weight: 600;
+            cursor: pointer;
+          }
+        }
+
+        .circle-progress-wrapper {
+          position: relative;
+          display: inline-block;
+          width: 40rem;
+          height: 40rem;
+
+          .progress {
+            position: absolute;
+            width: 40rem;
+            height: 40rem;
+          }
+
+
+          .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem; /* 텍스트 크기 */
+            font-weight: bold;
+          }
+        }
+      }
     }
   }
 }

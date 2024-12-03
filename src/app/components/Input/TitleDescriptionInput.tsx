@@ -33,6 +33,7 @@ const TitleDescriptionInput: FC<TitleDescriptionInputProps> = ({type, content, v
         })
             .then((res) => {
               if (res.status === 200) {
+                setValue('');
                 setStep(step + 1);
               }
             })

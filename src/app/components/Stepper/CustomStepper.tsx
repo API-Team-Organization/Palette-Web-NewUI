@@ -31,8 +31,8 @@ const CustomStepper = () => {
       <Stepper activeStep={step} connectorStyleConfig={ConnectorStyleProps} styleConfig={StepStyleProps}>
         <Step label="Ratio" />
         <Step label="Direction" />
-        <Step label="Title" />
         <Step label="Description" />
+        <Step label="Title" />
         <Step label="Position" />
         <Step label="Complete" />
       </Stepper>

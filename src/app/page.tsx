@@ -20,15 +20,16 @@ import {useSearchParams} from "next/navigation";
 import {io, Socket} from "socket.io-client";
 import TitleDescriptionInput from "@/app/components/Input/TitleDescriptionInput";
 import Position from "@/app/components/Position";
+import {Circle} from "rc-progress";
+import Image from "next/image";
 
 interface MessageItem {
   regenScope: boolean;
   message: string;
   resource: any;
-  isAi: string;
-  promptId: string;
-  datetime: Date;
   type: string;
+  value: number;
+  max: number;
   position: number;
 }
 
@@ -39,7 +40,7 @@ export default function Home() {
   const { step, setStep } = useStepStore();
   const [qna, setQna] = useState<any[]>();
   const [messageList, setMessageList] = useState<MessageItem[]>([]);
-  const [value, setValue] = useState<string>('');
+  const [Value, setValue] = useState<string>('');
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const roomId = searchParams.get('room');
@@ -95,14 +96,14 @@ export default function Home() {
     });
 
     socket.on('message', (message: MessageItem) => {
-      setMessageList((prevState) => [...prevState, { message: message.message,
+      setMessageList((prevState) => [...prevState, {
+        message: message.message,
         resource: message.resource,
-        isAi: message.isAi,
-        promptId: message.promptId,
-        datetime: message.datetime,
         type: message.type,
         position: message.position,
         regenScope: message.regenScope,
+        value: message.value,
+        max: message.max,
       }])
     });
 
@@ -145,6 +146,29 @@ export default function Home() {
     }
   }
 
+  function mapToPercentage(value: number): number {
+    const minValue = 1;
+    const maxValue = 6;
+    const targetMin = 0;
+    const targetMax = 100;
+
+    if (value < minValue || value > maxValue) {
+      throw new Error(`Value must be between ${minValue} and ${maxValue}.`);
+    }
+
+    return ((value - minValue) / (maxValue - minValue)) * (targetMax - targetMin) + targetMin;
+  }
+
+  const regenImage = async () => {
+    try {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/room/${roomId}/regen`, {}, {
+        headers: { 'x-auth-token': Cookies.get('access_token') }
+      })
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
     if (roomId) {
       getQna(roomId);
@@ -176,7 +200,8 @@ export default function Home() {
       clearInterval(refreshTokenIntervalId);
     }
   }, []);
-
+  const messageListProgress = messageList.filter((message) => message.value !== undefined);
+  console.log(messageListProgress[messageListProgress.length - 1]);
   return (
       <main className={`palette-container`}>
         <div className={`palette-panel`}>
@@ -245,9 +270,9 @@ export default function Home() {
             {
               step === 2 ? (
                   <TitleDescriptionInput
-                      type={'Title'}
+                      type={'Description'}
                       content={messageList[5]?.message || ''}
-                      value={value}
+                      value={Value}
                       setValue={setValue}
                   />
               ) : null
@@ -255,16 +280,46 @@ export default function Home() {
             {
               step === 3 ? (
                   <TitleDescriptionInput
-                      type={'Description'}
+                      type={'Title'}
                       content={messageList[7]?.message || ''}
-                      value={value}
+                      value={Value}
                       setValue={setValue}
                   />
               ) : null
             }
             {
               step === 4 ? (
-                  <Position content={messageList[9]?.message || '포스터 제목의 위치는 어디에 두시겠습니까?'}/>
+                  <Position content={messageList[6]?.message || '포스터 제목의 위치는 어디에 두시겠습니까?'}/>
+              ) : null
+            }
+            {
+              step === 5 ? (
+                  <div className={`complete`}>
+                    {
+                      messageListProgress.length > 0 && messageListProgress[messageListProgress.length - 1].value !== 6 ? (
+                          <div className="circle-progress-wrapper">
+                            <Circle
+                                percent={mapToPercentage(Number(messageListProgress.length > 0 ? messageListProgress[messageListProgress.length - 1].value : 1))}
+                                strokeWidth={5}
+                                strokeColor="#3E4AED"
+                                trailColor={'#D3D3D3'}
+                                className="progress"
+                            />
+                            <div className="progress-text">
+                              {`이미지 제작 중...`}
+                            </div>
+                          </div>
+                      ) : null
+                    }
+                    {
+                      messageListProgress[messageListProgress.length - 1]?.value === 6 && messageList[messageList.length-1].resource === 'IMAGE' ? (
+                          <div className={`finalBox`}>
+                            <img src={messageList[messageList.length - 1].message} alt={'image'}/>
+                            <div className={`regenBtn`} onClick={regenImage}>이미지 재생성</div>
+                          </div>
+                      ) : null
+                    }
+                  </div>
               ) : null
             }
           </div>
