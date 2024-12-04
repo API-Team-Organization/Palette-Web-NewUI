@@ -50,9 +50,9 @@ export default function Home() {
         }
 
         if (res.status === 401) {
-          alert('세션이 만료되었습니다.');
+          // alert('세션이 만료되었습니다.');
           Cookies.remove('access_token');
-          window.location.href = '/auth/login';
+          // window.location.href = '/auth/login';
         }
       })
     } catch (err) {
@@ -151,7 +151,7 @@ export default function Home() {
         <div className={`palette-main-wrapper`}>
           <div className={`palette-top-panel`} style={{display: isLoggedIn ? 'none' : 'flex'}}>
             <h1>로그인을 하여 Pallete가 제공하는 홍보물을 만들어 보세요.</h1>
-            <div className={`signBtn`}>Login to Palette</div>
+            <button onClick={() => window.location.href = "/auth/login"} className={`signBtn`}>Login to Palette</button>
           </div>
           <Suspense>
             <ModalComponent />
