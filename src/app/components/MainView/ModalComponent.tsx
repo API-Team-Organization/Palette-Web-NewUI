@@ -11,10 +11,11 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import {useSearchParams} from "next/navigation";
 import {io, Socket} from "socket.io-client";
+import {env} from "next-runtime-env";
 
 export default function ModalComponent() {
     const paletteAxios = axios.create({
-        baseURL: process.env.NEXT_PUBLIC_API_URL,
+        baseURL: env('NEXT_PUBLIC_API_URL'),
         validateStatus: () => true,
     });
 
@@ -29,7 +30,7 @@ export default function ModalComponent() {
     const [max, setMax] = useState<number>(-1);
     const [genStep, setGenStep] = useState<number>(-1);
     const connectWebSocket = useCallback(() => {
-        const socket: Socket = io(`${process.env.NEXT_PUBLIC_SOCKIO_HOST}/conversion`, {
+        const socket: Socket = io(`${env('NEXT_PUBLIC_SOCKIO_HOST')}/conversion`, {
             transports: ['websocket'],
         });
 
@@ -67,7 +68,7 @@ export default function ModalComponent() {
 
     const getQna = async (id: string) => {
         try {
-            await paletteAxios.get(`${process.env.NEXT_PUBLIC_API_URL}/room/${id}/qna`, {
+            await paletteAxios.get(`/room/${id}/qna`, {
                 headers: {
                     'x-auth-token': Cookies.get('access_token')
                 }
@@ -90,7 +91,7 @@ export default function ModalComponent() {
     }
     const regenImage = async () => {
         try {
-            await paletteAxios.post(`${process.env.NEXT_PUBLIC_API_URL}/room/${roomId}/regen`, {}, {
+            await paletteAxios.post(`/room/${roomId}/regen`, {}, {
                 headers: { 'x-auth-token': Cookies.get('access_token') }
             })
         } catch (err) {
@@ -100,7 +101,7 @@ export default function ModalComponent() {
     
     const getChat = async (roomId: string) => {
         try {
-            const res = await paletteAxios.get(`${process.env.NEXT_PUBLIC_API_URL}/chat/${roomId}`, {
+            const res = await paletteAxios.get(`/chat/${roomId}`, {
                 headers: { 'x-auth-token': Cookies.get('access_token') }
             })
             

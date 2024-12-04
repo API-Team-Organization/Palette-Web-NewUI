@@ -6,6 +6,7 @@ import axios from "axios";
 import {useSearchParams} from "next/navigation";
 import Cookies from "js-cookie";
 import useStepStore from "@/app/store/useStepStore";
+import {env} from "next-runtime-env";
 
 interface PositionProps {
   content: string;
@@ -25,7 +26,7 @@ const Position: FC<PositionProps> = ({content}) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault()
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/chat?roomId=${roomId}`, {
+      await axios.post(`${env('NEXT_PUBLIC_API_URL')}/chat?roomId=${roomId}`, {
         data: {
           type: 'GRID',
           choice: [position]

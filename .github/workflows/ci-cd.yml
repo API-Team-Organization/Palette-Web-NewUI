@@ -76,8 +76,9 @@ jobs:
 
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
 
-            mkdir -p ./web/
-            touch ./web/.env
-            echo '${{ secrets.ENVIONMENT }}' | base64 --decode > ./web/.env
+            touch ./.env
+            echo '${{ secrets.ENVIONMENT }}' | base64 --decode > ./.env
 
-            docker run -v $PWD/web:/app -d -p 3000:3000 --name web ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+            docker run --env-file .env -d -p 3000:3000 --name web ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+            
+            rm ./env

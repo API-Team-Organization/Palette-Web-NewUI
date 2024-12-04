@@ -4,6 +4,7 @@ import axios from "axios";
 import {useSearchParams} from "next/navigation";
 import Cookies from "js-cookie";
 import useStepStore from "@/app/store/useStepStore";
+import {env} from "next-runtime-env";
 
 interface TitleDescriptionInputProps {
   type: 'Title' | 'Description';
@@ -21,7 +22,7 @@ const TitleDescriptionInput: FC<TitleDescriptionInputProps> = ({type, content, v
     e.preventDefault();
     try {
       if (value.trim().length > 0) {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/chat?roomId=${roomId}`, {
+        await axios.post(`${env('NEXT_PUBLIC_API_URL')}/chat?roomId=${roomId}`, {
           data: {
             type: "USER_INPUT",
             input: value

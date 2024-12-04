@@ -1,5 +1,6 @@
 'use client'
 import './login.scss'
+import { env } from 'next-runtime-env';
 import AuthNavbar from "@/app/components/Navbar/AuthNavbar";
 import SignInput, {InputType} from "@/app/components/Input/SignInput";
 import {useState} from "react";
@@ -13,7 +14,7 @@ export default function Page() {
     e.preventDefault()
     try {
       if (email && password) {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+        await axios.post(`${env('NEXT_PUBLIC_API_URL')}/auth/login`, {
           email,
           password
         }).then((res) => {

@@ -6,6 +6,7 @@ import axios from "axios";
 import {useSearchParams} from "next/navigation";
 import useStepStore from "@/app/store/useStepStore";
 import Cookies from "js-cookie";
+import {env} from "next-runtime-env";
 
 interface QuestionnaireSelectButtonProps {
   step: number;
@@ -20,7 +21,7 @@ const QuestionnaireSelectButton: FC<QuestionnaireSelectButtonProps> = ({step}) =
   const clickHandler = async () => {
     if (step === 0) {
       try {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/chat?roomId=${room}`, {
+        await axios.post(`${env('NEXT_PUBLIC_API_URL')}/chat?roomId=${room}`, {
           data: { type: "SELECTABLE", choiceId: ratio }
         }, {
           headers: { 'x-auth-token': Cookies.get('access_token') }
@@ -35,7 +36,7 @@ const QuestionnaireSelectButton: FC<QuestionnaireSelectButtonProps> = ({step}) =
       }
     } else {
       try {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/chat?roomId=${room}`, {
+        await axios.post(`${env('NEXT_PUBLIC_API_URL')}/chat?roomId=${room}`, {
           data: { type: "SELECTABLE", choiceId: direction?.toUpperCase() }
         }, {
           headers: { 'x-auth-token': Cookies.get('access_token') }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import { Figtree } from 'next/font/google'
+import { Figtree } from 'next/font/google';
 import "./globals.css";
+import {PublicEnvScript} from "next-runtime-env";
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -35,6 +35,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <PublicEnvScript/>
+      </head>
       <body className={`${figtree.className}`}>
         {children}
       </body>

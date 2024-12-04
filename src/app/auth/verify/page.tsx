@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import useRegisterStore from "@/app/store/useRegisterStore";
+import {env} from "next-runtime-env";
 
 export default function Page() {
   const logoRef = useRef<HTMLDivElement | null>(null);
@@ -86,7 +87,7 @@ export default function Page() {
     try {
       await axios
           .post(
-              `${process.env.NEXT_PUBLIC_API_URL}/auth/verify`,
+              `${env('NEXT_PUBLIC_API_URL')}/auth/verify`,
               {
                 code: code.join(""),
               },
@@ -108,7 +109,7 @@ export default function Page() {
     try {
       await axios
           .post(
-              `${process.env.NEXT_PUBLIC_API_URL}/auth/resend`,
+              `${env('NEXT_PUBLIC_API_URL')}/auth/resend`,
               {},
               {
                 headers: { "x-auth-token": Cookies.get("access_token") },

@@ -7,6 +7,7 @@ import UserDetailInput from "@/app/components/Input/UserDetailInput";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Cookies from 'js-cookie';
+import {env} from "next-runtime-env";
 
 export default function Page () {
   const logoRef = useRef(null);
@@ -70,7 +71,7 @@ export default function Page () {
       }
 
       if (username && birth.year && birth.month && birth.day) {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
+        await axios.post(`${env('NEXT_PUBLIC_API_URL')}/auth/register`, {
           username,
           email,
           password,

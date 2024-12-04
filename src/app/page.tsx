@@ -12,10 +12,11 @@ import Cookies from "js-cookie";
 import useUserStore from "@/app/store/useUserStore";
 import useRoomStore from "@/app/store/useRoomStore";
 import ModalComponent from "@/app/components/MainView/ModalComponent";
+import {env} from "next-runtime-env";
 
 export default function Home() {
   const paletteAxios = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    baseURL: env('NEXT_PUBLIC_API_URL'),
     validateStatus: () => true,
   });
   
@@ -25,7 +26,7 @@ export default function Home() {
 
   const getUserData = async () => {
     try {
-      await paletteAxios.get(`${process.env.NEXT_PUBLIC_API_URL}/info/me`, {
+      await paletteAxios.get(`/info/me`, {
         headers: { 'x-auth-token': Cookies.get('access_token') }
       })
           .then((res) => {
@@ -40,7 +41,7 @@ export default function Home() {
 
   const getRoomLists = async () => {
     try {
-      await paletteAxios.get(`${process.env.NEXT_PUBLIC_API_URL}/room/list`, {
+      await paletteAxios.get(`/room/list`, {
         headers: {
           'x-auth-token': Cookies.get('access_token')
         }
@@ -62,7 +63,7 @@ export default function Home() {
 
   const addRoom = async () => {
     try {
-      await paletteAxios.post(`${(process.env.NEXT_PUBLIC_API_URL)}/room`, {}, {
+      await paletteAxios.post(`/room`, {}, {
         headers: {
           'x-auth-token': Cookies.get('access_token')
         }
@@ -84,7 +85,7 @@ export default function Home() {
     getRoomLists();
     const refreshTokenIntervalId = setInterval(async () => {
       try {
-        await paletteAxios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/session`, {
+        await paletteAxios.get(`/auth/session`, {
           headers: {
             'x-auth-token': Cookies.get('access_token'),
           },
