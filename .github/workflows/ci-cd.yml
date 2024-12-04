@@ -79,6 +79,6 @@ jobs:
             touch ./.env
             echo '${{ secrets.ENVIONMENT }}' | base64 --decode > ./.env
 
-            docker run --env-file .env -d -p 3000:3000 --name route ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+            docker run --env-file .env -d -p 3000:3000 --name palette-frontend ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
 
             rm ./.env
