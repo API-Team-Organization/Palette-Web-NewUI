@@ -1,12 +1,11 @@
 FROM node:20-alpine
 LABEL authors="jombi"
 
+COPY public /app/public
+COPY .next/standalone /app/
+COPY .next/static /app/.next/static
+
 WORKDIR /app
-
-COPY public ./public
-COPY .next/standalone ./
-COPY .next/static ./.next/static
-
 EXPOSE 3000
 
-ENTRYPOINT ["node", "server.js"] 
+ENTRYPOINT ["node", "server.js"]

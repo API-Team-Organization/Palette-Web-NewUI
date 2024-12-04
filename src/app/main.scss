@@ -233,10 +233,15 @@
         width: 13.5rem;
         height: 4rem;
         background: #3E4AED;
+        border: none;
         border-radius: 1rem;
         font-size: 1.4rem;
         font-weight: 600;
         color: white;
+        cursor: pointer;
+      }
+      .signBtn:hover {
+        background: #5462ff;
       }
     }
 
