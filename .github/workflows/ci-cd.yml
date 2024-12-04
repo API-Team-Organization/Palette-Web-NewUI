@@ -81,4 +81,4 @@ jobs:
 
             docker run --env-file .env -d -p 3000:3000 --name web ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
             
-            rm ./env
+            rm ./.env
