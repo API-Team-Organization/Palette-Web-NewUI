@@ -29,7 +29,7 @@ export default function ModalComponent() {
     const [max, setMax] = useState<number>(-1);
     const [genStep, setGenStep] = useState<number>(-1);
     const connectWebSocket = useCallback(() => {
-        const socket: Socket = io(`localhost:3336/conversion`, {
+        const socket: Socket = io(`${process.env.NEXT_PUBLIC_SOCKIO_HOST}/conversion`, {
             transports: ['websocket'],
         });
 
