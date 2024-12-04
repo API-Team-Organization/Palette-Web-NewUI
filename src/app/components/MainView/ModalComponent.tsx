@@ -191,8 +191,10 @@ export default function ModalComponent() {
             }
         </div>
     ) : (
-        <div>
-            왼쪽 창에서 제작할 방을 선택 해 주세요.
+        <div className={'palette-mainBox'}>
+            <p className={'palette-noCurrentChat'}>
+                왼쪽 창에서 제작할 방을 선택 해 주세요.
+            </p>
         </div>
     );
 }
