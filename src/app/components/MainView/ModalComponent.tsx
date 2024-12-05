@@ -21,7 +21,7 @@ export default function ModalComponent() {
 
     const searchParams = useSearchParams();
     const roomId = searchParams.get('room');
-    const [qna, setQna] = useState<any[]>();
+    const [_, setQna] = useState<any[]>();
     const { ratio, direction, setRatio } = useRatioDirectionStore();
     const { step, setStep } = useStepStore();
     const [Value, setValue] = useState<string>('');
@@ -91,6 +91,9 @@ export default function ModalComponent() {
     }
     const regenImage = async () => {
         try {
+            setGenStep(-1);
+            setMax(-1);
+            setPosition(-1);
             await paletteAxios.post(`/room/${roomId}/regen`, {}, {
                 headers: { 'x-auth-token': Cookies.get('access_token') }
             })
